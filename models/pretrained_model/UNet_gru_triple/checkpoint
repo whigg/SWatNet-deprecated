@@ -1,2 +1,2 @@
-model_checkpoint_path: "weights_epoch_7"
-all_model_checkpoint_paths: "weights_epoch_7"
+model_checkpoint_path: "weights_epoch_19"
+all_model_checkpoint_paths: "weights_epoch_19"
