@@ -38,7 +38,7 @@ def train_loops(model, loss_fun, optimizer, tra_dset, test_dset, epochs):
             test_loss_epoch, test_oa_epoch, test_miou_epoch = test_step(model, loss_fun, x_batch, y_batch)
         config.tra_loss_tracker.reset_states(), config.tra_oa.reset_states(), config.tra_miou.reset_states()
         config.test_loss_tracker.reset_states(), config.test_oa.reset_states(), config.test_miou.reset_states()
-        # ## write into tensorboard
+        ### write into tensorboard
         # with config.train_summary_writer.as_default():
         #     tf.summary.scalar('learning rate', data=config.optimizer.learning_rate(epoch*16), step=epoch)
         #     tf.summary.scalar('loss', data=tra_loss_epoch, step=epoch)
