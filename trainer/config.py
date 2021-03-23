@@ -37,8 +37,8 @@ dice_loss = DiceLoss_2d()
 # Define the Keras TensorBoard
 ## log path
 current_time = (dt.datetime.utcnow()+dt.timedelta(hours=8)).strftime("%Y%m%d-%H%M%S")
-train_log_dir = "logs/tensorb/" + current_time + '/train'
-test_log_dir = "logs/tensorb/" + current_time + '/test'
+train_log_dir = root_dir+"trainer/logs/tensorb/" + current_time + '/train'
+test_log_dir = root_dir+"trainer/logs/tensorb/" + current_time + '/test'
 ## tensorboard writer
 train_summary_writer = tf.summary.create_file_writer(train_log_dir)
 test_summary_writer = tf.summary.create_file_writer(test_log_dir)

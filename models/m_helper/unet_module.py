@@ -13,11 +13,11 @@ class unet_module(keras.layers.Layer):
     def __init__(self, name='unet_module', **kwargs):
         super(unet_module, self).__init__(name=name, **kwargs)
         self.encoder = [
-            dsample(exp_channels=32, out_channels=16, scale=2, name='down_1_x2', SE=False),  # 1/2
-            dsample(exp_channels=64, out_channels=16, scale=2, name='down_2_x2', SE=False),  # 1/4
-            dsample(exp_channels=128, out_channels=32, scale=2, name='down_3_x2', SE=False),  # 1/8
-            dsample(exp_channels=128, out_channels=32, scale=4, name='down_4_x4', SE=False), # 1/32
-            dsample(exp_channels=256, out_channels=64, scale=4, name='down_5_x4', SE=False), # 1/128
+            dsample(exp_channels=32, out_channels=16, scale=2, name='down_1_x2'),  # 1/2
+            dsample(exp_channels=64, out_channels=16, scale=2, name='down_2_x2'),  # 1/4
+            dsample(exp_channels=128, out_channels=32, scale=2, name='down_3_x2'),  # 1/8
+            dsample(exp_channels=128, out_channels=32, scale=4, name='down_4_x4'), # 1/32
+            dsample(exp_channels=256, out_channels=64, scale=4, name='down_5_x4'), # 1/128
             ]
         self.decoder = [
             upsample(out_channels=64, scale=4, name='up_1_x4'),

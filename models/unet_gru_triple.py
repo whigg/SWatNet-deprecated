@@ -2,7 +2,6 @@
 author: xin luo
 date: 2021.3.13
 '''
-
 import sys
 sys.path.append('/home/yons/Desktop/developer-luo/SWatNet/models')
 from tensorflow.keras import layers
@@ -52,16 +51,16 @@ class unet_gru_triple(keras.Model):
     def call(self, inputs):
         x_high, x_mid, x_low = inputs[0], inputs[1], inputs[2]
         ################################
-        ## feature encoding
+        # feature encoding
         skips_high, skips_mid, skips_low = [],[],[]
         x_encode_high, x_encode_mid, x_encode_low = x_high, x_mid, x_low
-        # low-level feature learning
+        ## low-level feature learning
         for encode_low in self.encoder:
             x_encode_low = encode_low(x_encode_low)
             skips_low.append(x_encode_low)
         skips_low = reversed(skips_low[:-1])
         ################################
-        # mid-level feature learning
+        ## mid-level feature learning
         for encode_mid in self.encoder:
             x_encode_mid = encode_mid(x_encode_mid)
             skips_mid.append(x_encode_mid)
