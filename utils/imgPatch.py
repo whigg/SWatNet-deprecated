@@ -9,8 +9,10 @@ class imgPatch():
     def __init__(self, img, patch_size, edge_overlay):
         ''' edge_overlay = left overlay or, right overlay
         edge_overlay should be an even number. '''
+        if edge_overlay % 2 != 0:
+            raise ValueError('Argument edge_overlay should be an even number')
+        self.edge_overlay = edge_overlay        
         self.patch_size = patch_size
-        self.edge_overlay = edge_overlay
         self.img = img[:,:,np.newaxis] if len(img.shape) == 2 else img
         self.img_row = img.shape[0]
         self.img_col = img.shape[1]

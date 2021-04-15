@@ -1,15 +1,18 @@
-import tensorflow as tf
+import sys
 import config
+sys.path.append(config.root_dir+"/models")
 import time
+import numpy as np
+import tensorflow as tf
 import data_loader
-from models.unet_gru_triple import unet_gru_triple
-from models.unet_triple import unet_triple
-from models.unet_triple import unet_triple_v2
+from seg_models.unet import unet
+from seg_models.unet_triple import unet_triple, unet_triple_v2
+from seg_models.unet_gru_triple import unet_gru_triple
 
 @tf.function
 def train_step(model, loss_fun, optimizer, x, y):
     with tf.GradientTape() as tape:
-        y_pre,_,_,_ = model(x, training=True)
+        y_pre = model(x, training=True)
         loss = loss_fun(y, y_pre)
     grads = tape.gradient(loss, model.trainable_weights)
     optimizer.apply_gradients(zip(grads, model.trainable_weights))
@@ -21,7 +24,7 @@ def train_step(model, loss_fun, optimizer, x, y):
 @tf.function
 def test_step(model, loss_fun, x, y):
     with tf.GradientTape() as tape:
-        y_pre,_,_,_ = model(x, training=False)
+        y_pre = model(x, training=False)
         loss = loss_fun(y, y_pre)
     config.test_loss_tracker.update_state(loss)
     config.test_oa.update_state(y, y_pre)
@@ -58,7 +61,7 @@ def train_loops(model, loss_fun, optimizer, tra_dset, test_dset, epochs):
         ## save the temporal trained weights
         if test_miou_epoch>max_miou_pre:
             max_miou_pre = test_miou_epoch
-            model.save_weights(config.path_savedmodel+'/unet_gru_triple/weights_epoch_%d'%(epoch+1))
+            model.save_weights(config.path_savedmodel+'/unet/weights_epoch_%d'%(epoch+1))
 
 if __name__ == '__main__':
     '''load dataset'''
@@ -67,13 +70,14 @@ if __name__ == '__main__':
     '''training configuration'''
     loss_fun = config.binary_ce_loss
     optimizer = config.optimizer
-    model = unet_gru_triple(scale_high=2048, scale_mid=512, scale_low=256, nclass=2,
-                                        trainable_gru=True, trainable_unet=True)
+    model = unet(nclass=2)
+    # model = unet_gru_triple(scale_high=2048, scale_mid=512, scale_low=256, nclass=2,
+    #                                     trainable_gru=True, trainable_unet=True)
     # model = unet_triple(scale_high=2048, scale_mid=512, scale_low=256, nclass=2)
     # model = unet_triple_v2(scale_high=2048, scale_mid=512, scale_low=256, nclass=2)
     '''model training'''
     train_loops(model, loss_fun, optimizer, tra_dset, \
         test_dset, epochs=config.epoches)
     '''model save'''
-    path_save_model = root_dir + '/models/pretrained/unet_gru_triple'
+    path_save_model = config.root_dir + '/models/pretrained/unet'
     model.save(path_save_model)

@@ -18,8 +18,8 @@ def get_tra_dset():
                               .repeat(4)\
                               .prefetch(tf.data.experimental.AUTOTUNE)
 
-  # tra_dset = tra_patch_group.shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
-  tra_dset = tra_patch_group.batch(config.BATCH_SIZE)
+  tra_dset = tra_patch_group.shuffle(config.BUFFER_SIZE).batch(config.BATCH_SIZE)
+
   return tra_dset
 
 def get_eva_dset():

@@ -9,6 +9,7 @@ import datetime as dt
 BATCH_SIZE = 8
 BUFFER_SIZE = 200
 epoches = 200
+lr = 0.0001
 root_dir = '/home/yons/Desktop/developer-luo/SWatNet'
 path_savedmodel = root_dir + '/models/temporal'
 tra_scene_file = root_dir + '/data/traScene.tfrecords'
@@ -29,6 +30,7 @@ lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
     decay_steps=10,
     decay_rate=0.95)
 optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
+# optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
 ## loss function
 focal_loss = FocalLoss()
 binary_ce_loss = tf.keras.losses.BinaryCrossentropy()
